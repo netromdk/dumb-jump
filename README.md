@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/jacktasia/dumb-jump](https://badges.gitter.im/jacktasia/dumb-jump.svg)](https://gitter.im/jacktasia/dumb-jump?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/jacktasia/dumb-jump.svg)](https://travis-ci.org/jacktasia/dumb-jump) [![Coverage Status](https://coveralls.io/repos/jacktasia/dumb-jump/badge.svg?branch=master&service=github&x=1)](https://coveralls.io/github/jacktasia/dumb-jump?branch=master) [![MELPA](http://melpa.org/packages/dumb-jump-badge.svg?x=6)](http://melpa.org/#/dumb-jump) [![MELPA Stable](https://stable.melpa.org/packages/dumb-jump-badge.svg?x=1)](https://stable.melpa.org/#/dumb-jump)
 
-![Dumb Jump GIF](media/dumb-jump-v2.gif?raw=true)
+![Dumb Jump GIF](media/dumb-jump-example-v2.gif?raw=true)
 
 ## About
 **Dumb Jump** is an Emacs "jump to definition" package with support for multiple programming languages that favors "just working". This means minimal -- and ideally zero -- configuration with absolutely no stored indexes (TAGS) or persistent background processes. Dumb Jump requires at least GNU Emacs `24.3`.
@@ -24,15 +24,21 @@ There is currently basic support for the following languages:
 * C#
 * Clojure
 * CoffeeScript
+* Coq
+* Crystal
+* Elixir
 * Emacs Lisp
+* Erlang
 * Faust
 * Fortran
 * Go
 * Haskell
 * Java
 * JavaScript
+* Julia
 * Lua
 * Objective-C
+* OCaml
 * Perl
 * PHP
 * Python
@@ -69,6 +75,7 @@ Adding `(dumb-jump-mode)` to your `.emacs` will enable the key bindings for two 
 * `dumb-jump-go-other-window` exactly like `dumb-jump-go` but uses `find-file-other-window` instead of `find-file`
 * `dumb-jump-go-prefer-external` like `dumb-jump-go` but will prefer definitions not in the current buffer
 * `dumb-jump-go-prefer-external-other-window` expected combination of `dumb-jump-go-prefer-external` and `dumb-jump-go-other-window`
+* `dumb-jump-go-prompt` exactly like `dumb-jump-go` but prompts user for function to jump to instead of using symbol at point
 
 ## Configuration
 
@@ -89,16 +96,22 @@ If you want to stop a directory from registering as the project root (and have D
     +../some-lib/src
     +/usr/lib/src
 
+*NOTE* When adding paths outside of the project (using `+`) ensure you use `dumb-jump-force-searcher` of either `'ag` or `'rg` (see below). This is required because the default searcher (`git-grep`) won't be able to search outside of the project root. This edge case will be fixed in a future release. That is, `git-grep` will NOT be set as the default searcher if a `.dumpjump` is present with a `+` path outside of the repo.
+
 ##### `.emacs` options
 
 * `(setq dumb-jump-default-project "~/code")` to change default project if one is not found (defaults to `~`)
 * `(setq dumb-jump-quiet t)` if Dumb Jump is too chatty.
-* To support more languages and/or definition types use `add-to-list` on `dumb-jump-find-rules` (see source code).
+* To support more languages and/or definition types customize `dumb-jump-find-rules` variable.
 * `(add-hook 'dumb-jump-after-jump-hook 'some-function)` to execute code after you jump
 * `(setq dumb-jump-selector 'ivy)` to use [ivy](https://github.com/abo-abo/swiper#ivy) instead of the default popup for multiple options.
 * `(setq dumb-jump-selector 'helm)` to use [helm](https://github.com/emacs-helm/helm) instead of the default popup for multiple options.
 * `(setq dumb-jump-force-searcher 'rg)` to force the search program Dumb Jump should use. It will _always_ use this searcher. If not set (`nil`) Dumb Jump will use `git-grep` if it's a git project and if not will try searchers in the following order `ag`, `rg`, `grep` (first installed wins). This is necessary if you want full control over the searcher Dumb Jump uses.
+* `(setq dumb-jump-aggressive nil)` to only automatically jump if there's only one match and otherwise present you with a list. This defaults to `t`, which means it will try its best to guess where you want to jump and only if it can't then give you a list of matches.
+* `(setq dumb-jump-use-visible-window nil)` if `t` (the default) when you're using multiple windows/panes and the file to jump to is already open in one of those windows then dump jump will focus that window and jump there instead of within your current window.
 * `(setq dumb-jump-prefer-searcher 'rg)` to let Dumb Jump know your searcher preference. If set this will still use `git-grep` if it's a git project (because it's the fastest), but will you use whatever you set here in any other situation. If not set Dumb Jump will follow the same order as mentioned in the `dumb-jump-force-searcher` description. At this time setting this value is only necessary if you prefer `rg` but have `ag` installed too.
+
+**If your project has multi-line method signatures [you should use `ag`](https://github.com/jacktasia/dumb-jump/issues/129)**.
 
 To learn more about how Dumb Jump picks a searcher see [this issue](https://github.com/jacktasia/dumb-jump/issues/109) and this [pull request](https://github.com/jacktasia/dumb-jump/pull/111).
 
@@ -110,6 +123,7 @@ I personally no longer use the `dumb-jump-mode` keybindings that were inspired b
     (use-package dumb-jump
       :bind (("M-g o" . dumb-jump-go-other-window)
              ("M-g j" . dumb-jump-go)
+             ("M-g i" . dumb-jump-go-prompt)
              ("M-g x" . dumb-jump-go-prefer-external)
              ("M-g z" . dumb-jump-go-prefer-external-other-window))
       :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
