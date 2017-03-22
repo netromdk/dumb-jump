@@ -19,28 +19,28 @@ For the currently [supported languages](#supported-languages) it seems to do a g
 
 There is currently basic support for the following languages:
 
-* Emacs Lisp
-* Python
-* JavaScript
-* PHP
-* Ruby
-* Java
-* C#
-* C/C++
-* CoffeeScript
-* Perl
-* Go
-* Swift
-* Objective-C
-* Scala
-* Clojure
-* Haskell
-* Lua
-* Rust
-* Faust
-* R
 * Bash
+* C/C++
+* C#
+* Clojure
+* CoffeeScript
+* Emacs Lisp
+* Faust
 * Fortran
+* Go
+* Haskell
+* Java
+* JavaScript
+* Lua
+* Objective-C
+* Perl
+* PHP
+* Python
+* R
+* Ruby
+* Rust
+* Scala
+* Swift
 
 If you have any issues with the existing languages, or you want support for another one, then please [open an issue](https://github.com/jacktasia/dumb-jump/issues). PRs are also welcome. If you'd like to add a language these PRs for [lua](https://github.com/jacktasia/dumb-jump/pull/33) and [rust](https://github.com/jacktasia/dumb-jump/pull/57) are good examples.
 
@@ -63,9 +63,9 @@ Dumb Jump performs best with The Silver Searcher `ag` ([ag install instructions]
 
 Adding `(dumb-jump-mode)` to your `.emacs` will enable the key bindings for two interactive Dumb Jump functions:
 
-* `dumb-jump-go` <kbd>C-M g</kbd> core functionality. Attempts to jump to the definition for the thing under point
-* `dumb-jump-back` <kbd>C-M p</kbd> jumps back to where you were when you jumped. These are chained so if you go down a rabbit hole you can get back out or where you want to be.
-* `dumb-jump-quick-look` <kbd>C-M q</kbd> like `dumb-jump-go` but shows tooltip with `file`, `line`, and `context`
+* `dumb-jump-go` <kbd>C-M-g</kbd> core functionality. Attempts to jump to the definition for the thing under point
+* `dumb-jump-back` <kbd>C-M-p</kbd> jumps back to where you were when you jumped. These are chained so if you go down a rabbit hole you can get back out or where you want to be.
+* `dumb-jump-quick-look` <kbd>C-M-q</kbd> like `dumb-jump-go` but shows tooltip with `file`, `line`, and `context`
 * `dumb-jump-go-other-window` exactly like `dumb-jump-go` but uses `find-file-other-window` instead of `find-file`
 * `dumb-jump-go-prefer-external` like `dumb-jump-go` but will prefer definitions not in the current buffer
 * `dumb-jump-go-prefer-external-other-window` expected combination of `dumb-jump-go-prefer-external` and `dumb-jump-go-other-window`
